@@ -37,6 +37,11 @@ namespace VelocityAPI
             }
         }
 
+        public static bool IsRobloxOpen()
+        {
+            return Process.GetProcessesByName("RobloxPlayerBeta").Any<Process>();
+        }
+
         private async Task DownloadVelocityAsync()
         {
             Directory.CreateDirectory("Bin");
