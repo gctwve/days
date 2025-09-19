@@ -1,5 +1,5 @@
-﻿using days;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
 using System.IO;
@@ -10,12 +10,30 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VelocityAPI;
 
 namespace DaysExecutor
 {
     internal class Program
     {
+        static Dictionary<string, string> validKeys = new Dictionary<string, string>
+    {
+        { "Guiisepic", "Access" }, //guys if you want role based just copy and paste
+    };
 
+        static void GrantAccess(string userKey)
+        {
+            if (validKeys.ContainsKey(userKey))
+            {
+                //nothing cuz then it will break asf
+            }
+            else
+            {
+                Console.WriteLine("Invalid key. Access denied.");
+                Thread.Sleep(3000);
+                Environment.Exit(0);
+            }
+        }
         public static async Task Main(string[] args)
         {
             Console.Clear();
@@ -28,16 +46,21 @@ namespace DaysExecutor
 ██████╔╝██║░░██║░░░██║░░░██████╔╝  ███████╗██╔╝╚██╗███████╗╚█████╔╝╚██████╔╝░░░██║░░░╚█████╔╝██║░░██║
 ╚═════╝░╚═╝░░╚═╝░░░╚═╝░░░╚═════╝░  ╚══════╝╚═╝░░╚═╝╚══════╝░╚════╝░░╚═════╝░░░░╚═╝░░░░╚════╝░╚═╝░░╚═╝");
             Console.ForegroundColor = ConsoleColor.White;
-            Task.Run(ChangeConsoleTitle);
-            ShowProgressBar();
+            var task1 = Task.Run(() => ChangeConsoleTitle()); //keep it running in the bc
+            var task2 = Task.Run(() => ShowProgressBar());
+
+            await Task.WhenAll(task2);
 
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("Welcome to Days Executor!");
             Console.ResetColor();
+            Console.WriteLine("Please input the key:");
+            string thefuckingkey = Console.ReadLine().Trim();
+            GrantAccess(thefuckingkey);
 
             Console.WriteLine("Checking Roblox and Injection status...");
 
-            if (!robl.IsRobloxOpen())
+            if (!VelocityAPI.VelAPI.IsRobloxOpen())
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("❌ Roblox is not open. Please open Roblox and restart.");
@@ -188,7 +211,7 @@ namespace DaysExecutor
 
         private static string GenerateRandomString(Random random, int length)
         {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWGUIGUIGUIGUIGUIGUIGUIGUIGUIGUIXYZabcdefghijklmnopqrstuvwxyz0123456789";
             return new string(Enumerable.Range(0, length).Select(_ => chars[random.Next(chars.Length)]).ToArray());
         }
 
